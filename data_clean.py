@@ -5,7 +5,7 @@ def data_clean(dataset,type):
     
     cols = list(dataset.columns)
     for c in cols:
-        dataset[c][dataset[c].isin([-9999,-2222,-2222.2,-2,-1111.1,-1111,-1])]= None
+        dataset = dataset.where(~dataset.isin([-9999,-2222,-2222.2,-2,-1111.1,-1111,-1]), other= None)
         mean = dataset[c].mean()
         dataset[c].fillna(value = mean , inplace = True)
         
