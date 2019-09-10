@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 #read in select columns from various csvs
-demo = pd.read_csv('./chsi/DEMOGRAPHICS.csv',usecols = ['CHSI_County_Name','CHSI_State_Abbr','Population_Size'])
+demo = pd.read_csv('./chsi/DEMOGRAPHICS.csv',usecols = ['CHSI_County_Name','CHSI_State_Abbr','Population_Size','State_FIPS_Code','County_FIPS_Code'])
 birth_and_death = pd.read_csv('./chsi/MEASURESOFBIRTHANDDEATH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Premature', 'Under_18','Over_40','Late_Care','LBW','Suicide','MVA'])
 vulnerable = pd.read_csv('./chsi/VUNERABLEPOPSANDENVHEALTH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','No_HS_Diploma','Unemployed','Sev_Work_Disabled','Major_Depression','Recent_Drug_Use','Toxic_Chem'])
 prev_serv_use = pd.read_csv('./chsi/PREVENTIVESERVICESUSE.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Pap_Smear','Mammogram','Proctoscopy','Pneumo_Vax','Flu_Vac'])
