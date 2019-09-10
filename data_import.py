@@ -4,11 +4,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 #read in select columns from various csvs
-demo = pd.read_csv('./chsi/DEMOGRAPHICS.csv',usecols = ['CHSI_County_Name','CHSI_State_Abbr','Population_Size','Poverty','Age_19_Under','Age_19_64','Age_65_84', 'Age_85_and_Over','White','Black','Native_American','Asian','Hispanic'])
-birth_and_death = pd.read_csv('./chsi/MEASURESOFBIRTHANDDEATH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Premature', 'Under_18','Over_40','Late_Care'])
+demo = pd.read_csv('./chsi/DEMOGRAPHICS.csv',usecols = ['CHSI_County_Name','CHSI_State_Abbr','Population_Size'])
+birth_and_death = pd.read_csv('./chsi/MEASURESOFBIRTHANDDEATH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Premature', 'Under_18','Over_40','Late_Care','LBW','Suicide','MVA'])
 vulnerable = pd.read_csv('./chsi/VUNERABLEPOPSANDENVHEALTH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','No_HS_Diploma','Unemployed','Sev_Work_Disabled','Major_Depression','Recent_Drug_Use','Toxic_Chem'])
-prev_serv_use = pd.read_csv('./chsi/PREVENTIVESERVICESUSE.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Meas_Rpt','Meas_Ind','Meas_Exp','Pap_Smear','Mammogram','Proctoscopy','Pneumo_Vax','Flu_Vac'])
-risk_factors = pd.read_csv('./chsi/RISKFACTORSANDACCESSTOCARE.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Uninsured','Prim_Care_Phys_Rate','Dentist_Rate'])
+prev_serv_use = pd.read_csv('./chsi/PREVENTIVESERVICESUSE.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Pap_Smear','Mammogram','Proctoscopy','Pneumo_Vax','Flu_Vac'])
+risk_factors = pd.read_csv('./chsi/RISKFACTORSANDACCESSTOCARE.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','Uninsured','Prim_Care_Phys_Rate','Dentist_Rate','No_Exercise','Few_Fruit_Veg','High_Blood_Pres','Diabetes','Elderly_Medicare','Disabled_Medicare'])
 summ_health = pd.read_csv('./chsi/SUMMARYMEASURESOFHEALTH.csv', usecols = ['CHSI_County_Name','CHSI_State_Abbr','ALE'])
 
 #merge al of the csvs together on the correct columns
