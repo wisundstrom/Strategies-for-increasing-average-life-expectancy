@@ -10,9 +10,10 @@ def data_clean(dataset,type):
         dataset[c].fillna(value = mean , inplace = True)
         
     if type == 'x':
-        dataset['FIPS']= dataset['State_FIPS_Code''].astype(str)+'_'+df['foo']+'_'+df['new']
-        dataset = dataset.drop(columns = ['Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram'])
+#         dataset['FIPS']= dataset['State_FIPS_Code'].astype(str)+dataset['County_FIPS_Code'].astype(str)
         list_totals = ['No_HS_Diploma','Unemployed','Sev_Work_Disabled','Major_Depression','Recent_Drug_Use','Uninsured' ]
         for l in list_totals:
             dataset[l] = round(((dataset[l]/dataset['Population_Size'])*100),2)
+        dataset = dataset.drop(columns = ['Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code','Population_Size'])
+            
     return dataset
