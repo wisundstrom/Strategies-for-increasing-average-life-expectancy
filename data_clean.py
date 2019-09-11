@@ -14,7 +14,7 @@ def create_fips_columns(dataset):
     return dataset
 
 def drop_cols(dataset):
-    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code','Population_Size'])
+    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code','Population_Size','Sev_Work_Disabled')
     return dataset
 
 def drop_invalid(dataset):
@@ -55,6 +55,13 @@ def match_records(dataset_x,dataset_y):
     dataset_y.drop(index = drop_from_y  , inplace = True)
     print(dataset_x.shape[0],dataset_y.shape[0])
     return dataset_x,dataset_y
+    
+def create_fips_df(dataset_train,dataset_test):
+    full_data=pd.concat([dataset_train,dataset_test])
+    if "FIPS" in (list(X_train.columns)):
+        dataset_test.drop(columns = 'FIPS' , inplace = True)
+        dataset_train.drop(columns = 'FIPS' , inplace = True)
+    return dataset_train,dataset_test,full_data
     
 def data_clean(dataset_x,dataset_y):
    
