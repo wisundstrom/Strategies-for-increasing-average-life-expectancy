@@ -14,7 +14,7 @@ def create_fips_columns(dataset):
     return dataset
 
 def drop_cols(dataset):
-    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code'])
+    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code','Population_Size'])
     return dataset
 
 def drop_invalid(dataset):
@@ -28,7 +28,7 @@ def change_to_percentage(dataset):
     for r in list_ratios:
         dataset[r] = round((dataset[r]/1000),2)
         
-    list_totals = ['No_HS_Diploma','Unemployed','Sev_Work_Disabled','Major_Depression','Recent_Drug_Use','Uninsured','Elderly_Medicare','Disabled_Medicare']
+    list_totals = ['No_HS_Diploma','Unemployed','Sev_Work_Disabled','Major_Depression','Recent_Drug_Use','Uninsured','Elderly_Medicare','Disabled_Medicare','MVA']
     for l in list_totals:
         if [dataset['Population_Size'] - dataset[l] < 0]:
             dataset = dataset.loc[dataset['Population_Size'] - dataset[l] > 0]
@@ -53,12 +53,13 @@ def match_records(dataset_x,dataset_y):
     drop_from_x = list(set(x_train_idx) - set(y_train_idx))
     dataset_x.drop(index = drop_from_x  , inplace = True)
     dataset_y.drop(index = drop_from_y  , inplace = True)
-    print(dataset_x.shape,dataset_y.shape)
+    print(dataset_x.shape[0],dataset_y.shape[0])
     return dataset_x,dataset_y
     
 def data_clean(dataset_x,dataset_y):
    
     """First parameter must be features dataframe, second paramenter must be target dataframe"""
+    #print(dataset_x.shape,dataset_y.shape)
     dataset_x = create_fips_columns(dataset_x)
     dataset_x = replace_null_values(dataset_x)
     dataset_x = change_to_percentage(dataset_x)
