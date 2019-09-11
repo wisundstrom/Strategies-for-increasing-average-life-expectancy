@@ -1,5 +1,5 @@
 """
-
+This file contains wrappers and helper functions for the technical notebook
 """
 import pandas as pd
 import numpy as np
@@ -10,7 +10,8 @@ from sklearn.linear_model import Lasso, Ridge, ElasticNet
 from sklearn.pipeline import Pipeline, make_pipeline
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import plotly
+import plotly.figure_factory as ff
 
 def import_and_clean():
     # data_import.py performs our test-train split and writes four csvs, which we read in here
@@ -20,13 +21,13 @@ def import_and_clean():
     y_test_temp = pd.read_csv('./data/dirty_y_test.csv', index_col=0)
 
     # These perfrom basic data cleaning
-    X_train,y_train = dc.data_clean(X_train_temp,y_train_temp)
-    X_test,y_test = dc.data_clean(X_test_temp,y_test_temp)
-    
-    #these functions create full sets of test and train data with FIPS county codes for making plots
-    X_train,X_test,full_data = dc.create_fips_df(X_train,X_test)
-    y_train,y_test,full_target = dc.create_fips_df(y_train,y_test)
-    
+    X_train, y_train = dc.data_clean(X_train_temp, y_train_temp)
+    X_test, y_test = dc.data_clean(X_test_temp, y_test_temp)
+
+    # these functions create full sets of test and train data with FIPS county codes for making plots
+    X_train, X_test, full_data = dc.create_fips_df(X_train, X_test)
+    y_train, y_test, full_target = dc.create_fips_df(y_train, y_test)
+
     return X_train, X_test, y_train, y_test, full_data, full_target
 
 
@@ -40,23 +41,55 @@ def model_selection_results(search):
 
 
 def run_model(X_train, y_train, l1_ratio=.5, alpha=.5, save=None):
-    reg = ElasticNet(alpha=.4, l1_ratio=.6, max_iter=50000)
+    reg = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, max_iter=50000)
     reg.fit(X_train, y_train)
     coeffs = reg.coef_.tolist()
     coeffs_columns = X_train.columns
     coefficients = list(zip(coeffs, coeffs_columns))
     coefficients.sort()
 
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(15, 10))
     plt.xticks(rotation=60)
     plt.title('Effect of Features on Average Life Expectancy')
     plt.ylabel('Expected Change in ALE by Feature ')
-    df2=pd.DataFrame([coeffs_columns,coeffs])
-    df_sorted=df2.T
-    df_sorted=df_sorted.sort_values(1)
-    sns.barplot(list(df_sorted[0]),list(df_sorted[1]))
+    df2 = pd.DataFrame([coeffs_columns, coeffs])
+    df_sorted = df2.T
+    df_sorted = df_sorted.sort_values(1)
+    sns.barplot(list(df_sorted[0]), list(df_sorted[1]))
     plt.gca().invert_yaxis()
     if save:
         plt.savefig('Regression_Results.png')
-    
+
     return df_sorted
+
+
+def test_model(X_test, y_test, l1_ratio=.5, alpha=.5, X_train=None, y_train=None):
+    reg = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, max_iter=50000)
+    reg.fit(X_train,y_train)
+    score = reg.score(X_test, y_test)
+    
+    return score
+
+
+def choropleth(full_data,column,title,r=None,save=None):
+    mind=full_data[column].min()
+    maxd=full_data[column].max()
+    
+    fips=list(full_data.FIPS)
+    values=list(full_data[column])
+    
+    bins=list(np.linspace(mind,maxd,21))
+    scale=["#E50059", "#DA025D", "#D00462", "#C50766", "#BB096B", "#B00B70", "#A60E74", "#9C1079", "#91127E", "#871582",
+       "#7C1787", "#721A8C", "#681C90", "#5D1E95", "#532199", "#48239E", "#3E25A3", "#3428A7", "#292AAC",
+       "#1F2CB1", "#142FB5", "#0A31BA", "#0034BF"]
+    if r:
+        scale.reverse()
+        
+    fig = ff.create_choropleth(fips=fips, values=values,binning_endpoints=bins, legend_title=title, colorscale=scale)
+    fig.layout.template = None
+    
+    if save:
+        fig.write_image(f'{column}_counties.png')
+        
+    fig.write_image("County_LBW.png")
+    fig.show()
