@@ -14,7 +14,7 @@ def create_fips_columns(dataset):
     return dataset
 
 def drop_cols(dataset):
-    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code'])
+    dataset = dataset.drop(columns = ['Premature','Toxic_Chem','Pap_Smear','Proctoscopy','Flu_Vac','Pneumo_Vax','Mammogram','State_FIPS_Code','County_FIPS_Code','Sev_Work_Disabled'])
     return dataset
 
 def drop_invalid(dataset):

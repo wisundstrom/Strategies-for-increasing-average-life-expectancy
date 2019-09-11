@@ -19,11 +19,9 @@ def import_and_clean():
     X_test_temp = pd.read_csv('./data/dirty_X_test.csv', index_col=0)
     y_test_temp = pd.read_csv('./data/dirty_y_test.csv', index_col=0)
 
-    # We then use the data_clean function from data_clean.py
-    X_train = data_clean(X_train_temp, 'x')
-    y_train = data_clean(y_train_temp, 'y')
-    X_test = data_clean(X_test_temp, 'x')
-    y_test = data_clean(y_test_temp, 'y')
+    # We then use the function from data_clean.py
+    X_train,y_train = data_clean(X_train_temp,y_train_temp)
+    X_test,y_test = data_clean(X_test_temp,y_test_temp)
     return X_train, X_test, y_train, y_test
 
 
