@@ -58,7 +58,7 @@ def run_model(X_train, y_train, l1_ratio=.5, alpha=.5, save=None):
     df2 = pd.DataFrame([coeffs_columns, coeffs])
     df_sorted = df2.T
     df_sorted = df_sorted.sort_values(1)
-    sns.barplot(list(df_sorted[0]), list(df_sorted[1]))
+    sns.barplot(list(df_sorted[0]), list(df_sorted[1]), color='#0485d1')
     plt.gca().invert_yaxis()
     if save:
         plt.savefig('Regression_Results.png')
@@ -71,9 +71,9 @@ def test_model(X_test, y_test, l1_ratio=.5, alpha=.5, X_train=None, y_train=None
     the score for that model with the test data"""
     reg = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, max_iter=50000)
     reg.fit(X_train, y_train)
-    score = reg.score(X_test, y_test)
+    print(reg.score(X_test, y_test))
 
-    return score
+    return reg
 
 
 def choropleth(full_data, column, title, reverse=None, save=None):
